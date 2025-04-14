@@ -1,0 +1,28 @@
+import board
+import busio
+import adafruit_mlx90614
+
+i2c = busio.I2C(board.SCL, board.SDA, frequency=100000)
+sensor = adafruit_mlx90614.MLX90614(i2c)
+
+def get_temperature():
+    return sensor.object_temperature
+
+
+
+
+from temp_sensor import get_temperature
+from pulse_sensor import get_pulse_rate
+import time
+
+print("Starting Raspberry Pi Temp and Pulse Monitor...")
+
+try:
+    while True:
+        temp = get_temperature()
+        pulse = get_pulse_rate()
+        print(f"Temperature: {temp:.2f}°C | Pulse: {pulse} BPM")
+        time.sleep(2)
+
+except KeyboardInterrupt:
+    print("Monitoring stopped.")
